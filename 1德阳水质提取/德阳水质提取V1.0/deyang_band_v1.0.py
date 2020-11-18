@@ -4,7 +4,6 @@ import pandas as pd
 import xlsxwriter
 
 
-
 def read_tiff(path):
     """
     固定成了单波段
