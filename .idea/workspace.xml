@@ -2,7 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70483032-7fc5-4ccc-b750-8fd5a3c58470" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/1德阳水质提取/res.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/1德阳水质提取/s2b20200216waterRrs_CHLAz.tif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/1德阳水质提取/s2b20200216waterRrs_CHLAz.tif.aux.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/1德阳水质提取/test_get_rand(张总).py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/1德阳水质提取/德阳水质提取V1.0/deyang_band_v1.0.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/1德阳水质提取/德阳水质提取V1.0/s2b_20200216_waterRrs.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/2德阳评价算法/Tar_algorithm_V1.0/deyang_tar_v1.0.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/2德阳评价算法/Tar_algorithm_V1.0/deyang_tar_v1.1.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/2德阳评价算法/Tar_algorithm_V1.0/deyang_tar_v1.1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/2德阳评价算法/Tar_algorithm_V1.0/s2b_20200216_Tar.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/2德阳评价算法/notebook_Algorithm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/2德阳评价算法/水质评价模块.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/3德阳结果转换/README.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/3德阳结果转换/deyang_Rar_to_Result_V1.0.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/3德阳结果转换/deyang_Results_transformation_V1.0.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/3德阳结果转换/s2b_20200216_Res.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +77,9 @@
       <module name="德阳水质评价" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$USER_HOME$/Desktop" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -94,6 +114,7 @@
       <workItem from="1605630947359" duration="199000" />
       <workItem from="1605707376317" duration="10000" />
       <workItem from="1605745984535" duration="1291000" />
+      <workItem from="1605951333529" duration="510000" />
     </task>
     <servers />
   </component>
