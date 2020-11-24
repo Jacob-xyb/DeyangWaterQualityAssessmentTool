@@ -4,7 +4,7 @@ import pandas as pd
 import xlsxwriter
 
 
-def read_tiff(path):
+def read_tiff(path, key = None):
     """
     固定成了单波段
     :param path: tiff 文件所在的目录，单个字符串，最好加 r 前缀
@@ -24,9 +24,14 @@ def read_tiff(path):
         for j in range(nXSize):
             if data[i, j] > 0:
                 data_list.append(data[i, j])
+            elif key == 1:
+                if data[i, j] > -1:
+                    data_list.append(data[i, j])
+                else:
+                    data_list.append(-2)
             else:
                 data_list.append(-999)
-    # print(len(data_list))
+    print(str(nXSize)+","+str(nYSize))
     return data_list
 
 def read_xy(path):
@@ -64,11 +69,12 @@ def read_xy(path):
 
 
 if __name__ == '__main__':
-    path_tiff = r"D:\4.company\项目文件\四川\德阳\转换后tiff\哨兵_2020_10m_cgcs2000"
-    path1 = r"\s2b20200216waterRrs_CHLAz.tif"
-    path2 = r"\s2b20200216waterRrs_SDz.tif"
-    path3 = r"\s2b20200216waterRrs_TNz.tif"
-    path4 = r"\s2b20200216waterRrs_TPz.tif"
+    path_tiff = r"/Users/ethan/Desktop/newfiber/xyb/哨兵_2020_10m_cgcs2000"
+    path1 = r"/s2b20200216waterRrs_CHLAz.tif"
+    path2 = r"/s2b20200216waterRrs_SDz.tif"
+    path3 = r"/s2b20200216waterRrs_TNz.tif"
+    path4 = r"/s2b20200216waterRrs_TPz.tif"
+    path5 = r"/s2b20200216waterRrs_NDVIz.tif"
 
     XY = read_xy(path_tiff+path1)
     cdnX, cdnY = XY[0], XY[1]
@@ -76,12 +82,13 @@ if __name__ == '__main__':
     SD = read_tiff(path_tiff+path2)
     TN = read_tiff(path_tiff+path3)
     TP = read_tiff(path_tiff+path4)
+    NDVI = read_tiff(path_tiff+path5, 1)
     print(cdnX[0])
     # 创建DataFrame
-    # data = [cdnX, cdnY, CHLA, SD, TN, TP]
+    # data n= [cdnX, cdnY, CHLA, SD, TN, TP]
     # columns = ['X', 'Y', 'CHLA', 'SD', 'TP', 'TN']
     dict = {'X': cdnX, 'Y': cdnY, 'CHLA': CHLA,
-            'SD': SD, 'TP': TP, 'TN': TN}
+            'SD': SD, 'TP': TP, 'TN': TN, 'NDVI':NDVI}
     df = pd.DataFrame(data=dict)
     # df.drop(index=df[df['CHLA'].isin([-999])].index[0], inplace=True)  # 只删除了一行
     # df['CHLA'].isin([-999])  # Name: CHLA, Length: 210748, dtype: bool
@@ -91,17 +98,17 @@ if __name__ == '__main__':
     # 清洗异常值
     for col in df.columns:  # df1.columns : 列名称的list
         # print(col)  # col为一个个列名
-        df.drop(index=(df.loc[(df[col] == -999)].index), inplace=True)
-        # df.drop(index=(df[df[col].isin([-999])].index), inplace=True)
+        #df.drop(index=(df.loc[(df[col] == -999)].index), inplace=True)
+        df.drop(index=(df[df[col].isin([-999])].index), inplace=True)
         # df.reset_index(inplace=True)  # 重置索引，但会保留原索引
-        df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
+        #df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
     print(df)
 
     """写入部分"""
-    writer = pd.ExcelWriter('s2b_20200216_waterRrs.xlsx')  # 写入Excel文件
+    """writer = pd.ExcelWriter(r'../../s2b_20200216_waterRrs2.xlsx')  # 写入Excel文件
     df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
     writer.save()
-    writer.close()
+    writer.close()"""
 
 
 

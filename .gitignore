@@ -6,3 +6,7 @@ branch/
 
 # data
 data/
+
+# yqy
+.DS_Store
+master/.DS_Store
