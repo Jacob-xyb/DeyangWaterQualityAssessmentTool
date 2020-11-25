@@ -64,11 +64,11 @@ def read_xy(path):
 
 
 if __name__ == '__main__':
-    path_tiff = r"D:\4.company\项目文件\四川\德阳\转换后tiff\哨兵_2020_10m_cgcs2000"
-    path1 = r"\s2b20200216waterRrs_CHLAz.tif"
-    path2 = r"\s2b20200216waterRrs_SDz.tif"
-    path3 = r"\s2b20200216waterRrs_TNz.tif"
-    path4 = r"\s2b20200216waterRrs_TPz.tif"
+    path_tiff = r"D:\1.company\德阳\水质评价模块\转换后tiff\哨兵_2020_10m_cgcs2000"+"\\"
+    path1 = r"s2b20200216waterRrs_CHLAz.tif"
+    path2 = r"s2b20200216waterRrs_SDz.tif"
+    path3 = r"s2b20200216waterRrs_TNz.tif"
+    path4 = r"s2b20200216waterRrs_TPz.tif"
 
     XY = read_xy(path_tiff+path1)
     cdnX, cdnY = XY[0], XY[1]
@@ -98,7 +98,7 @@ if __name__ == '__main__':
     print(df)
 
     """写入部分"""
-    writer = pd.ExcelWriter('s2b_20200216_waterRrs.xlsx')  # 写入Excel文件
+    writer = pd.ExcelWriter(r'..\data\test\s2b_20200216_waterRrs.xlsx')  # 写入Excel文件
     df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
     writer.save()
     writer.close()
