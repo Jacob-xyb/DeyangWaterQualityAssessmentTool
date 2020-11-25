@@ -113,6 +113,7 @@ if __name__ == '__main__':
     # df1 = df[df['CHLA'].isin([-999])]  # 包含-999的DataFrame
     # df.drop(index=df[df['CHLA'] < 0].index[0], inplace=True)  # 只删除了一行
     # df.drop(index=(df.loc[(df['CHLA'] == -999)].index), inplace=True)  # 可删除多行 # 只允许有一个key
+
     """清洗异常值"""
     for col in df.columns:  # df1.columns : 列名称的list
         # print(col)  # col为一个个列名
