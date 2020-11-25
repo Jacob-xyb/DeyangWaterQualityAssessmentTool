@@ -123,6 +123,7 @@ if __name__ == '__main__':
         df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
     print(df)
 
+
     """写入部分"""
     writer = pd.ExcelWriter(r'..\data\test\s2b_20200216_text.xlsx')  # 写入Excel文件
     df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
