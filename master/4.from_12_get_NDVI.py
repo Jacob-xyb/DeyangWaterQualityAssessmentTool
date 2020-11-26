@@ -18,7 +18,7 @@ def read_tiff(path, num=1, key=None):
     """
     dataset = gdal.Open(path)
     # print(dataset.GetDescription())  # 数据描述
-    # print(dataset.RasterCount)  # 波段数
+    print(dataset.RasterCount)  # 波段数
     nXSize = dataset.RasterXSize  # 列数
     nYSize = dataset.RasterYSize  # 行数
     band = dataset.GetRasterBand(num)  # 获取波段
@@ -80,12 +80,12 @@ def read_xy(path):
 
 
 if __name__ == '__main__':
-    path_tiff = r"D:\1.company\德阳\水质评价模块\转换后tiff\哨兵_2020_10m_cgcs2000\20200216"+"\\"
-    path1 = r"s2b20200216waterRrs_CHLAz.tif"
-    path2 = r"s2b20200216waterRrs_SDz.tif"
-    path3 = r"s2b20200216waterRrs_TNz.tif"
-    path4 = r"s2b20200216waterRrs_TPz.tif"
-    path5 = r"D:\1.company\德阳\水质评价模块\转换后tiff\哨兵_2020_10m_cgcs2000\12波段\s2b20200216Rrsz.tif"
+    path_tiff = r"D:\1.company\德阳\水质评价模块\转换后tiff\哨兵_2020_10m_cgcs2000\20200317"+"\\s2b20200317waterRrs_"
+    path1 = r"CHLAz.tif"
+    path2 = r"SDz.tif"
+    path3 = r"TNz.tif"
+    path4 = r"TPz.tif"
+    path5 = r"D:\1.company\德阳\水质评价模块\转换后tiff\哨兵_2020_10m_cgcs2000\12波段\0317after_12.tif"
 
     XY = read_xy(path_tiff+path1)
     cdnX, cdnY = XY[0], XY[1]
@@ -125,7 +125,7 @@ if __name__ == '__main__':
 
 
     """写入部分"""
-    writer = pd.ExcelWriter(r'..\data\test\s2b_20200216_text.xlsx')  # 写入Excel文件
+    writer = pd.ExcelWriter(r'..\data\test\s2b_20200317_after12.xlsx')  # 写入Excel文件
     df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
     writer.save()
     writer.close()
