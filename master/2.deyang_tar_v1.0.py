@@ -1,5 +1,6 @@
 import pandas as pd       # 导入pandas模块
 import math
+import xlsxwriter
 
 def read_band(path, head=None):
     """
@@ -193,8 +194,8 @@ def TSI_rank(df, list_tar):
 
 if __name__ == '__main__':
     '''读取部分'''
-    path_band = r'D:\4.company\项目文件\四川\德阳\德阳水质评价\1德阳水质提取\德阳水质提取V1.0' +\
-                '\s2b_20200216_waterRrs.xlsx'
+    path_band = r'/Users/ethan/Desktop/newfiber/xyb/德阳' +\
+                '/s2b_20200216_waterRrs.xlsx'
     # df = read_band(path=path_band, head=200)
     df = read_band(path=path_band)
     '''计算部分'''
@@ -209,8 +210,9 @@ if __name__ == '__main__':
     df_tar["surface"] = surface
     df_tar["TLI"] = TLI
     df_tar["TSI"] = TSI
+    df_tar["NDVI"] = df["NDVI"]
     '''写入部分'''
-    writer = pd.ExcelWriter('s2b_20200216_Tar.xlsx')  # 写入Excel文件
+    writer = pd.ExcelWriter('/Users/ethan/Desktop/newfiber/xyb/德阳/s2b_20200216_TarR.xlsx')  # 写入Excel文件
     df_tar.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
     writer.save()
     writer.close()

@@ -10,6 +10,43 @@ NIR为近红外波段的反射值；sb2_band(8)
 R为红波段的反射值; sb2_band_band(4)
 '''
 
+def read_band(path, target, num=0, key=None):
+    """
+    :param path: 全波段文件路径
+    :param num: 默认值为0，表示全波段读取；若指定数字，则读取指定波段
+    :param key:
+    :effect：生成excel文件包含全波段数据
+    """
+    dataset = gdal.Open(path)
+    nob = dataset.RasterCount  #波段数
+    nXSize = dataset.RasterXSize  # 列数
+    nYSize = dataset.RasterYSize  # 行数
+    df_list = []
+    if num == 0:
+        for i in range(1, nob+1):
+            band = dataset.GetRasterBand(i)  # 获取波段
+            data = band.ReadAsArray(0, 0, nXSize, nYSize)  # data为numpy格式
+            data_list = []
+            for j in range(nYSize):
+                data_list = [*data_list, *data[j]]
+            df_list.append(data_list)
+    else:
+        band = dataset.GetRasterBand(num)  # 获取波段
+        data = band.ReadAsArray(0, 0, nXSize, nYSize)  # data为numpy格式
+        for j in range(nYSize):
+            df_list = [*df_list, *data[j]]
+    # print(len(df_list))
+    df = pd.DataFrame(df_list)
+    #print(df.shape)
+    df = df.transpose() # 行列转换
+
+    '''写入部分'''
+    writer = pd.ExcelWriter(target)  # 写入Excel文件
+    df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
+    writer.save()
+    writer.close()
+
+
 def read_tiff(path, num=1, key=None):
     """
     固定成了单波段
@@ -18,7 +55,7 @@ def read_tiff(path, num=1, key=None):
     """
     dataset = gdal.Open(path)
     # print(dataset.GetDescription())  # 数据描述
-    print(dataset.RasterCount)  # 波段数
+    #print(dataset.RasterCount)  # 波段数
     nXSize = dataset.RasterXSize  # 列数
     nYSize = dataset.RasterYSize  # 行数
     band = dataset.GetRasterBand(num)  # 获取波段
@@ -87,6 +124,9 @@ if __name__ == '__main__':
     path4 = r"TPz.tif"
     path5 = r"D:\1.company\德阳\水质评价模块\转换后tiff\哨兵_2020_10m_cgcs2000\12波段\0317after_12.tif"
 
+    read_band(path_tiff+path1, target="/Users/ethan/Desktop/newfiber/xyb/12波段.xlsx")  # 读全波段并生成excel
+    #exit()
+
     XY = read_xy(path_tiff+path1)
     cdnX, cdnY = XY[0], XY[1]
     CHLA = read_tiff(path_tiff+path1)
@@ -121,7 +161,6 @@ if __name__ == '__main__':
         # df.drop(index=(df[df[col].isin([-999])].index), inplace=True)
         # df.reset_index(inplace=True)  # 重置索引，但会保留原索引
         df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
-    print(df)
 
 
     """写入部分"""
