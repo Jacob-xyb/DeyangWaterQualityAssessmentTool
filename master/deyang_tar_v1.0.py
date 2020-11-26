@@ -210,6 +210,7 @@ if __name__ == '__main__':
     df_tar["surface"] = surface
     df_tar["TLI"] = TLI
     df_tar["TSI"] = TSI
+    df_tar["NDVI"] = df["NDVI"]
     '''写入部分'''
     writer = pd.ExcelWriter('/Users/ethan/Desktop/newfiber/xyb/德阳/s2b_20200216_TarR.xlsx')  # 写入Excel文件
     df_tar.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页

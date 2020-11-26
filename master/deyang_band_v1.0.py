@@ -24,7 +24,7 @@ def read_tiff(path, key = None):
         for j in range(nXSize):
             if data[i, j] >= 0:
                 data_list.append(data[i, j])
-            elif key == 1:
+            elif key == 1:   # 读取NDVI，小于-1异常值及NA设置为-2
                 if data[i, j] > -1:
                     data_list.append(data[i, j])
                 else:
