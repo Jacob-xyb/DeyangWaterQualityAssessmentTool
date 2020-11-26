@@ -90,7 +90,7 @@ if __name__ == '__main__':
     # data n= [cdnX, cdnY, CHLA, SD, TN, TP]
     # columns = ['X', 'Y', 'CHLA', 'SD', 'TP', 'TN']
     dict = {'X': cdnX, 'Y': cdnY, 'CHLA': CHLA,
-            'SD': SD, 'TP': TP, 'TN': TN, 'NDVI':NDVI, 'FAI01':FAI01}
+            'SD': SD, 'TP': TP, 'TN': TN, 'FAI01':FAI01, 'NDVI':NDVI}
     df = pd.DataFrame(data=dict)
     # df.drop(index=df[df['CHLA'].isin([-999])].index[0], inplace=True)  # 只删除了一行
     # df['CHLA'].isin([-999])  # Name: CHLA, Length: 210748, dtype: bool
