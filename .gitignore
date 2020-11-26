@@ -6,14 +6,12 @@ branch/
 
 # data
 data/
-<<<<<<< HEAD
 .docx
 
 # reference
 references/
-=======
 
 # yqy
 .DS_Store
 master/.DS_Store
->>>>>>> yqy
+
