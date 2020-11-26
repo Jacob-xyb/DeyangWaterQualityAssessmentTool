@@ -22,7 +22,7 @@ Deyang water quality assessment tool; Self; Test.
 
 #### 2.deyang_tar_v1
 
-> 功能：对水质数据进行评价 / 地表水指标、综合营养状态指数（TLI）、卡尔森营养状态指数（TSI)
+> 功能：对水质数据进行评价 / 地表水指标、综合营养状态指数（TLI）、卡尔森营养状态指数（TSI)、NDVI
 >
 > 输入：deyang_band_v1.0 输出的 .xlsx / 水质数据
 >
@@ -39,6 +39,8 @@ Deyang water quality assessment tool; Self; Test.
 #### 4.from_12_get_NDVI_v1
 
 > 功能：直接在卫片获取波段反射率，计算NDVI值
+>
+>- 含有读取全部波段函数
 > 
 > 输入：12波段的哨兵二号影像资料 -- .tif
 > 
@@ -70,6 +72,11 @@ Deyang water quality assessment tool; Self; Test.
 ### v1.1
 - 在v1.0基础上添加 from_12_get_NDVI（说明写入Module）
 - 改变了文档序号
+
+### v1.2
+- 补全了参数，增加了蓝藻、NDVI指标
+- 在[4.from_12_get_NDVI_v1](#####4.from_12_get_NDVI_v1)中增加了get_band()函数，可以读取卫片全部波段反射率。
+
 
 
 
