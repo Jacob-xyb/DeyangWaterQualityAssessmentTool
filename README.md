@@ -11,6 +11,33 @@ Deyang water quality assessment tool; Self; Test.
 - 没有主函数，分为三个零散的模块
 - 以哨兵卫星数据做的测试
 - 输出均为.xlsx
+
+### v1.1
+- 在v1.0基础上添加 from_12_get_NDVI（说明写入Module）
+- 改变了文档序号
+
+### v1.2
+- 补全了参数，增加了蓝藻、NDVI指标
+- 在[4.from_12_get_NDVI_v1](#####4.from_12_get_NDVI_v1)中增加了get_band()函数，可以读取卫片全部波段反射率。
+
+### Manual
+
+#### 
+- 
+
+#### Import
+
+> main: gdal, numpy, pandas, xlsxwriter, math
+
+#### Run
+
+> 想要得到水质结果：
+>
+> deyang_band_v1.0 - deyang_tar_to_result_V1.0 即可
+>
+> 适用范围：CHLA, SD, TP, TN, 蓝藻, NDVI六个指标
+>
+
 ### Module
 #### 1.deyang_band_v1
 
@@ -46,36 +73,13 @@ Deyang water quality assessment tool; Self; Test.
 > 
 > 输出：xy坐标和value，考虑到数据尺寸问题需要将水质一起输入 -- .xlsx
 
-### Manual
-
-#### Import
-
-> main: gdal, numpy, pandas, xlsxwriter, math
-
-#### Run
-
-> 想要得到水质结果：
->
-> deyang_band_v1.0 - deyang_tar_to_result_V1.0
->
-> 即可
-
-> 适用范围：CHLA, SD, TP, TN四个指标 
->
-
 ### TODO
 >- [x]  精简代码，删除测试过程以及多余描述
 > 
 >- [x] 测试扩展 蓝藻、NDVI 指标
 > 
 
-### v1.1
-- 在v1.0基础上添加 from_12_get_NDVI（说明写入Module）
-- 改变了文档序号
 
-### v1.2
-- 补全了参数，增加了蓝藻、NDVI指标
-- 在[4.from_12_get_NDVI_v1](#####4.from_12_get_NDVI_v1)中增加了get_band()函数，可以读取卫片全部波段反射率。
 
 
 
