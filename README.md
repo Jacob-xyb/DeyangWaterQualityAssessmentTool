@@ -22,7 +22,7 @@ Deyang water quality assessment tool; Self; Test.
 
 #### 2.deyang_tar_v1
 
-> 功能：对水质数据进行评价 / 地表水指标、综合营养状态指数（TLI）、卡尔森营养状态指数（TSI)
+> 功能：对水质数据进行评价 / 地表水指标、综合营养状态指数（TLtiI）、卡尔森营养状态指数（TSI)
 >
 > 输入：deyang_band_v1.0 输出的 .xlsx / 水质数据
 >
@@ -49,6 +49,50 @@ Deyang water quality assessment tool; Self; Test.
 #### Import
 
 > main: gdal, numpy, pandas, xlsxwriter, math
+
+#### Notice
+
+1.deyang_band_v1.0.py:
+
+> I. 填入path_tiff: tiff文件文件夹所在路径；path1-6：分别表示CHLA，SD，TN，TP，NDVI，FAI01；
+>
+> II. read_tiff分别提取tiff文件中的数据存到list中，创建字典dict时与相应名字一一对应，若修改顺序或者添加指标时，需注意添加到字典中
+>
+> III. 所有路径写入建议在路径前加入r，如r'../../*'
+
+2.deyang_tar_v1.0.py:
+
+> I. 填入由deyang_band_v1.0.py输出的结果excel文件完整路径；
+>
+> II. df_tar为结果输出前的data frame，若需要添加条目或者改变已有条目顺序，需在整合部分进行修改
+
+#### Functions, Params and Effects
+
+##### read_tiff(path, key=None):
+- path : tiff文件所在路径及完整文件名，可加r前缀
+- key : 默认为None，当读取NDVI的数据时，需设置key=1
+>>return : list包含读入单波段数据
+
+##### read_xy(path):
+- path ： 坐标文件路径及完整文件名
+>>return : 储存XY坐标的列表
+
+##### read_band(path, head=None):
+- path : 储存band的excel文件所在路径及完整文件名，可加r前缀
+- head : 可选择输入，表示选取前head数量的数据
+>>无return，直接创建excel文件并写入所有波段数据
+
+##### surface_rank(df, list_tar):
+- df : 存储单一波段全水质数据的dataframe
+- list_tar : 存储了算地表水所需的水质指标，i.e.["TP", "TN"] 
+
+##### TLI_rank(df, list_tar):
+- df : 存储单一波段全水质数据的dataframe
+- list_tar : 存储了算TLI函数所需的水质指标, i.e.["CHLA", "SD", "TP", "TN"]
+
+##### TSI_rank(df, list_tar):
+- df : 存储单一波段全水质数据的dataframe
+- list_tar : 存储了算TSI函数所需的水质指标, i.e.["CHLA", "SD", "TP"]
 
 #### Run
 
