@@ -117,12 +117,12 @@ def read_xy(path):
 
 
 if __name__ == '__main__':
-    path_tiff = r"D:\1.company\德阳\水质评价模块\转换后tiff\哨兵_2020_10m_cgcs2000\20200216"+"\\s2b20200216waterRrs_"
+    path_tiff = r"/Users/ethan/Desktop/newfiber/xyb/哨兵_2020_10m_cgcs2000"+"/s2b20200216waterRrs_"
     path1 = r"CHLAz.tif"
     path2 = r"SDz.tif"
     path3 = r"TNz.tif"
     path4 = r"TPz.tif"
-    path5 = r"D:\1.company\德阳\水质评价模块\转换后tiff\哨兵_2020_10m_cgcs2000\12波段\after_12.tif"
+    path5 = r"/Users/ethan/Desktop/newfiber/xyb/哨兵_2020_10m_cgcs2000/after_12.tif"
 
     # read_band(path_tiff+path1, target="/Users/ethan/Desktop/newfiber/xyb/12波段.xlsx")  # 读全波段并生成excel
     #exit()
@@ -156,9 +156,9 @@ if __name__ == '__main__':
     # 短波红外波段有两个 R1610 是rand(11); R2190 是rand(12)
     R665 = read_tiff(path5, num=4, key=True)
     R842 = read_tiff(path5, num=8, key=True)
-    R1610 = read_tiff(path5, num=10, key=True)
+    R1610 = read_tiff(path5, num=12, key=True)
     # R842_ = R665 + (R1610-R665)*(842-665)/(1610-665)
-    R842_ = [R665[i] + (R1610[i] - R665[i]) * (842 - 665) / (1610 - 665)
+    R842_ = [R665[i] + (R1610[i] - R665[i]) * (842 - 665) / (2190 - 665)
              for i in range(len(R665))]
     # FAI = R842 - R842_
     FAI = [R842[i] - R842_[i] for i in range(len(R842))]
@@ -181,7 +181,7 @@ if __name__ == '__main__':
         df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
 
     """写入部分"""
-    writer = pd.ExcelWriter(r'..\data\test\s2b_20200216_FAI.xlsx')  # 写入Excel文件
+    writer = pd.ExcelWriter(r'/Users/ethan/Desktop/newfiber/xyb/哨兵_2020_10m_cgcs2000/s2b_20200216_FAI11.xlsx')  # 写入Excel文件
     df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
     writer.save()
     writer.close()
