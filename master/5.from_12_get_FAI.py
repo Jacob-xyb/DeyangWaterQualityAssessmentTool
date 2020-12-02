@@ -156,7 +156,7 @@ if __name__ == '__main__':
     # 短波红外波段有两个 R1610 是rand(11); R2190 是rand(12)
     R665 = read_tiff(path5, num=4, key=True)
     R842 = read_tiff(path5, num=8, key=True)
-    R1610 = read_tiff(path5, num=10, key=True)
+    R1610 = read_tiff(path5, num=11, key=True)
     # R842_ = R665 + (R1610-R665)*(842-665)/(1610-665)
     R842_ = [R665[i] + (R1610[i] - R665[i]) * (842 - 665) / (1610 - 665)
              for i in range(len(R665))]
