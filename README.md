@@ -6,19 +6,25 @@ Deyang water quality assessment tool; Self; Test.
 * [DeyangWaterQualityAssessmentTool](#DeyangWaterQualityAssessmentTool)
   * [V1.0](#V1.0)
 
-## v1.0
+### v1.3
+- 添加from_12_get_FAI
+- 添加分析数据的小程序（可忽略）
 
-- 没有主函数，分为三个零散的模块
-- 以哨兵卫星数据做的测试
-- 输出均为.xlsx
+>- [ ] 将输入参数接口化工作
+>- [ ] 将模块尽可能的整合完成v2.0版本
+
+### v1.2
+- 补全了参数，增加了蓝藻、NDVI指标
+- 在[4.from_12_get_NDVI_v1](#####4.from_12_get_NDVI_v1)中增加了get_band()函数，可以读取卫片全部波段反射率。
 
 ### v1.1
 - 在v1.0基础上添加 from_12_get_NDVI（说明写入Module）
 - 改变了文档序号
 
-### v1.2
-- 补全了参数，增加了蓝藻、NDVI指标
-- 在[4.from_12_get_NDVI_v1](#####4.from_12_get_NDVI_v1)中增加了get_band()函数，可以读取卫片全部波段反射率。
+## v1.0
+- 没有主函数，分为三个零散的模块
+- 以哨兵卫星数据做的测试
+- 输出均为.xlsx
 
 ### Module
 #### 1.deyang_band_v1
