@@ -194,8 +194,8 @@ def TSI_rank(df, list_tar):
 
 if __name__ == '__main__':
     '''读取部分'''
-    path_band = r'/Users/ethan/Desktop/newfiber/xyb/德阳' +\
-                '/s2b_20200216_waterRrs.xlsx'
+    ref = pd.read_excel(r"./input_param.xlsx", index_col=0)
+    path_band = ref.iat[19,2]
     # df = read_band(path=path_band, head=200)
     df = read_band(path=path_band)
     '''计算部分'''
@@ -212,7 +212,8 @@ if __name__ == '__main__':
     df_tar["TSI"] = TSI
     df_tar["NDVI"] = df["NDVI"]
     '''写入部分'''
-    writer = pd.ExcelWriter('/Users/ethan/Desktop/newfiber/xyb/德阳/s2b_20200216_TarR.xlsx')  # 写入Excel文件
+
+    writer = pd.ExcelWriter("./"+ref.iat[23,2]+".xlsx")  # 写入Excel文件
     df_tar.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
     writer.save()
     writer.close()
