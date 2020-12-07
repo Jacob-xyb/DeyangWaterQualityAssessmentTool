@@ -68,22 +68,24 @@ def read_xy(path):
 
 
 if __name__ == '__main__':
-    path_tiff = r"/Users/ethan/Desktop/newfiber/xyb/德阳/20200317"
-    path1 = r"/s2b20200317waterRrs_CHLAz.tif"
-    path2 = r"/s2b20200317waterRrs_SDz.tif"
-    path3 = r"/s2b20200317waterRrs_TNz.tif"
-    path4 = r"/s2b20200317waterRrs_TPz.tif"
-    path5 = r"/s2b20200317waterRrs_NDVIz.tif"
-    path6 = r"/s2b20200317waterRrs_FAI01z.tif"
+    ref = pd.read_excel(r"./input_param.xlsx", index_col=0)
+    path_tiff = ref.iat[4,2]
+    path1 = ref.iat[5,2]
+    path2 = ref.iat[6,2]
+    path3 = ref.iat[7,2]
+    path4 = ref.iat[8,2]
+    path5 = ref.iat[9,2]
+    path6 = ref.iat[10,2]
 
     XY = read_xy(path_tiff+path1)
+
     cdnX, cdnY = XY[0], XY[1]
     CHLA = read_tiff(path_tiff+path1)
     SD = read_tiff(path_tiff+path2)
     TN = read_tiff(path_tiff+path3)
     TP = read_tiff(path_tiff+path4)
-    NDVI = read_tiff(path_tiff+path5, 1)
-    FAI01 = read_tiff(path_tiff+path6)
+    FAI01 = read_tiff(path_tiff+path5)
+    NDVI = read_tiff(path_tiff + path6, 1)
 
     # print(cdnX[0])
     # 创建DataFrame
@@ -108,7 +110,7 @@ if __name__ == '__main__':
     # print(df)
 
     """写入部分"""
-    writer = pd.ExcelWriter(r'../../../德阳/s2b_20200317_waterRrs.xlsx')  # 写入Excel文件
+    writer = pd.ExcelWriter("./"+ref.iat[14,2]+".xlsx")  # 写入Excel文件
     df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
     writer.save()
     writer.close()
