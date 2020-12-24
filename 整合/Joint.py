@@ -1,9 +1,9 @@
-from READ import *
 from Getdata import *
 if __name__ == '__main__':#C:\Users\Administrator\PycharmProjects\input_param.xlsx
-    #C://Users//Administrator//PycharmProjects//input_param.xlsx
-    getxy_data()#获取xy坐标与对应的参数的excel表
-    ref = pd.read_excel("C://Users//Administrator//PycharmProjects//input_param.xlsx", index_col=0)
+    print("请输入图片存放路径")#"E://shixi//github_mycellar//DeyangWaterQualityAssessmentTool//整合//input_param.xlsx"
+    path=input()
+    getxy_data(path)#获取xy坐标与对应的参数的excel表
+    ref = pd.read_excel("E://shixi//github_mycellar//DeyangWaterQualityAssessmentTool//整合//input_param.xlsx", index_col=0)
     '''
     根据要求选择是一步形成结果还是多步分开，每步都展示结果
     '''

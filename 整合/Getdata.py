@@ -1,13 +1,13 @@
 from READ import *
-def getxy_data():
-    ref = pd.read_excel("C://Users//Administrator//PycharmProjects//input_param.xlsx", index_col=0)
+def getxy_data(path):
+    ref = pd.read_excel(path, index_col=0)
     path_tiff = ref.iat[4, 2]
     path1 = ref.iat[5, 2]
     path2 = ref.iat[6, 2]
     path3 = ref.iat[7, 2]
     path4 = ref.iat[8, 2]
-    path5 = ref.iat[9, 2]
-    path6 = ref.iat[10, 2]
+   # path5 = ref.iat[9, 2]
+   # path6 = ref.iat[10, 2]
 
     XY = read_xy(path_tiff + path1)
 
