@@ -4,7 +4,7 @@ import pandas as pd
 import xlsxwriter
 import math
 
-def read_tiff(path, key = None):
+def read_tiff(path, num=1, key=None):
     """
     固定成了单波段
     :param path: tiff 文件所在的目录，单个字符串，最好加 r 前缀
@@ -12,26 +12,31 @@ def read_tiff(path, key = None):
     """
     dataset = gdal.Open(path)
     # print(dataset.GetDescription())  # 数据描述
-    # print(dataset.RasterCount)  # 波段数
+    #print(dataset.RasterCount)  # 波段数
     nXSize = dataset.RasterXSize  # 列数
     nYSize = dataset.RasterYSize  # 行数
-    band = dataset.GetRasterBand(1)  # 获取波段
+    band = dataset.GetRasterBand(num)  # 获取波段
     # print(nXSize, nYSize)
     data = band.ReadAsArray(0, 0, nXSize, nYSize)  # data为numpy格式
     # dataDF = pd.DataFrame(data)
     data_list = []
-    for i in range(nYSize):
-        for j in range(nXSize):
-            if data[i, j] >= 0:
+    if key == True:
+        for i in range(nYSize):
+            for j in range(nXSize):
+                # if data[i, j] > 0:
                 data_list.append(data[i, j])
-            elif key == 1:   # 读取NDVI，小于-1异常值及NA设置为-2
-                if data[i, j] > -1:
+                # else:
+                #     data_list.append(-999)
+    else:
+        for i in range(nYSize):
+            for j in range(nXSize):
+                if data[i, j] > 0:
                     data_list.append(data[i, j])
                 else:
-                    data_list.append(-2)
-            else:
-                data_list.append(-999)
+                    data_list.append(-999)
+        # print(len(data_list))
     return data_list
+    # return dataDF
 def read_xy(path):
     """
        读取坐标，一般一期文件读一次就行

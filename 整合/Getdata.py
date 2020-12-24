@@ -6,9 +6,11 @@ def getxy_data(path):
     path2 = ref.iat[6, 2]
     path3 = ref.iat[7, 2]
     path4 = ref.iat[8, 2]
+   #path5 = r"D:\1.company\德阳\水质评价模块\转换后tiff\哨兵_2020_10m_cgcs2000\12波段\0317after_12.tif"
+   # NIR_8 = read_tiff(path5, num=8, key=True)
    # path5 = ref.iat[9, 2]
    # path6 = ref.iat[10, 2]
-
+    #read_band(path_tiff + path1, target="/12波段.xlsx")
     XY = read_xy(path_tiff + path1)
 
     cdnX, cdnY = XY[0], XY[1]
@@ -16,6 +18,13 @@ def getxy_data(path):
     SD = read_tiff(path_tiff + path2)
     TN = read_tiff(path_tiff + path3)
     TP = read_tiff(path_tiff + path4)
+   # NIR_8 = read_tiff(path5, num=8, key=True)
+    # NIR_9 = read_tiff(path5, num=9, key=True)
+   # R = read_tiff(path5, num=4, key=True)
+   # NDVI_8 = [0] * len(NIR_8)
+    # NDVI_9 = [0] * len(SD)
+   # for i in range(len(NIR_8)):
+    #    NDVI_8[i] = (NIR_8[i] - R[i]) / (NIR_8[i] + R[i])
     # FAI01 = read_tiff(path_tiff+path5)
     # NDVI = read_tiff(path_tiff + path6, 1)
 
@@ -63,6 +72,7 @@ def get_sorc(ref,fac= False):
         writer.close()
     else:##写三张表
         path_band = ("./" + ref.iat[14, 2] + ".xlsx")
+        print(path_band)
         df = read_band(path=path_band)
         surface = surface_rank2(df=df, list_tar=["TP", "TN"])
         TLI = TLI_rank2(df=df, list_tar=["CHLA", "SD", "TP", "TN"])
