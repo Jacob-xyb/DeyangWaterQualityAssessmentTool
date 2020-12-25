@@ -10,7 +10,7 @@ NIR为近红外波段的反射值；sb2_band(8)
 R为红波段的反射值; sb2_band_band(4)
 '''
 
-def read_band(path, target, num=0, key=None):
+def read_band(path, target=None, num=0, key=None):
     """
     :param path: 全波段文件路径
     :param num: 默认值为0，表示全波段读取；若指定数字，则读取指定波段
