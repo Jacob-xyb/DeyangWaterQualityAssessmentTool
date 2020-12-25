@@ -4,28 +4,119 @@ import pandas as pd
 import xlsxwriter
 import math
 
-def getxy_data(path):
-    ref = pd.read_excel(path, index_col=0)
-    path_tiff = ref.iat[4, 2]
-    path1 = ref.iat[5, 2]
-    path2 = ref.iat[6, 2]
-    path3 = ref.iat[7, 2]
-    path4 = ref.iat[8, 2]
-   # path5 = ref.iat[9, 2]
-   #path5 = r"D:\1.company\德阳\水质评价模块\转换后tiff\哨兵_2020_10m_cgcs2000\12波段\0317after_12.tif"
-   # NIR_8 = read_tiff(path5, num=8, key=True)
-   # path5 = ref.iat[9, 2]
-   # path6 = ref.iat[10, 2]
-   # read_band(path_tiff + path5, num=2, target="/12波段.xlsx")
-    XY = read_xy(path_tiff + path1)
+def read_xy(path):
+    """
+       读取坐标，一般一期文件读一次就行
+       :param path: 路径文件
+       :return: 存储XY坐标的列表，def[0] is X ; def[1] is Y.
+       """
+    '''tiff坐标提取'''  # 两列
+    gdal.AllRegister()  # 注册所有已知的驱动，包括动态库自动加载的驱动
+    dataset = gdal.Open(path)
+    adfGeoTransform = dataset.GetGeoTransform()
+    # # 左上角地理坐标
+    # print(adfGeoTransform[0])
+    # print(adfGeoTransform[3])
+    nXSize = dataset.RasterXSize  # 列数
+    nYSize = dataset.RasterYSize  # 行数
+    print(nXSize, nYSize)
+    arrSlope = []  # 用于存储每个像素的（X，Y）坐标
+    for i in range(nYSize):  # 注意XY不要写反
+        # row = []
+        for j in range(nXSize):
+            px = adfGeoTransform[0] + j * adfGeoTransform[1] + i * adfGeoTransform[2]
+            py = adfGeoTransform[3] + j * adfGeoTransform[4] + i * adfGeoTransform[5]
+            # GT(0)和GT(3)是第一组，表示图像左上角的地理坐标；
+            # GT(1)和GT(5)是第二组，表示图像横向和纵向的分辨率（一般这两者的值相等，符号相反，横向分辨率为正数，纵向分辨率为负数）；
+            # GT(2)和GT(4)是第三组，表示图像旋转系数，对于一般图像来说，这两个值都为0。
+            col = [px, py]
+            arrSlope.append(col)
+    cdnX, cdnY = [], []  # 用于分别存储每个像素的(x,y)坐标
+    for i in range(nXSize * nYSize):
+        cdnX.append(arrSlope[i][0])
+        cdnY.append(arrSlope[i][1])
+    return cdnX, cdnY
 
+def getxy_data(path,fac):
+    ref = pd.read_excel(path, index_col=0)
+    path_tiff = ref.iat[4, 2]#初始路径
+    path1 = ref.iat[5, 2]#CHLA参数
+    path2 = ref.iat[6, 2]#SD参数
+    path3 = ref.iat[7, 2]#TP参数
+    path4 = ref.iat[8, 2]#TN参数
+    # path5 = ref.iat[9, 2]#NDVI参数
+    # path6 = ref.iat[9, 2]#FAI参数
+    '''
+    可以检测读取到的图片波段数与参数fac是否对应，不对应则try-except报错
+    '''
+
+
+   #NIR_8 = read_tiff(path5, num=8, key=True)
+   #read_band(path_tiff + path5, num=2, target="/12波段.xlsx")
+    XY = read_xy(path_tiff + path1)
     cdnX, cdnY = XY[0], XY[1]
-    CHLA = read_tiff(path_tiff + path1)
-    SD = read_tiff(path_tiff + path2)
-    TN = read_tiff(path_tiff + path3)
-    TP = read_tiff(path_tiff + path4)
+
+    if(fac=='S' or fac=='s'):
+        CHLA = read_tiff(path_tiff + path1)
+        SD = read_tiff(path_tiff + path2)
+        TN = read_tiff(path_tiff + path3)
+        TP = read_tiff(path_tiff + path4)
+        dict = {'X': cdnX, 'Y': cdnY, 'CHLA': CHLA,
+                'SD': SD, 'TP': TP, 'TN': TN}
+
+    elif(fac=='M' or fac=='m'):
+        print("请选择要查询的波段数:")
+        num=input()
+        CHLA = read_tiff(path_tiff + path1,num)
+        SD = read_tiff(path_tiff + path2,num)
+        TN = read_tiff(path_tiff + path3,num)
+        TP = read_tiff(path_tiff + path4,num)
+        dict = {'X': cdnX, 'Y': cdnY, 'CHLA': CHLA,
+                'SD': SD, 'TP': TP, 'TN': TN} #,'NDVI:NDVI_num,'FAI':FAI
+        '''
+        NIR_num = read_tiff(path5, num, key=True)
+        NDVI_num = [0] * len(NIR_num)
+        R = read_tiff(path5, num=4, key=True) #这里的参数num取值待定
+            for i in range(len(NIR_8)):
+                NDVI_num[i] = (NIR_num[i]-R[i]) / (NIR_num[i]+R[i])
+        
+        R665 = read_tiff(path5, num, key=True)
+        R842 = read_tiff(path5, num, key=True)
+        R1610 = read_tiff(path5, num, key=True)
+        # R842_ = R665 + (R1610-R665)*(842-665)/(1610-665)
+        R842_ = [R665[i] + (R1610[i] - R665[i]) * (842 - 665) / (2190 - 665)
+                 for i in range(len(R665))]
+        FAI = [R842[i] - R842_[i] for i in range(len(R842))]
+        # FAI = [1 if i >= 0.02 else 0 for i in FAI]
+        多波段计算NDVI和FAI
+        '''
+
+
+
+    df = pd.DataFrame(data=dict)
+    for col in df.columns:  # df1.columns : 列名称的list
+        # print(col)  # col为一个个列名
+        # df.drop(index=(df.loc[(df[col] == -999)].index), inplace=True)
+        df.drop(index=(df[df[col].isin([-999])].index), inplace=True)  # 清洗4个指标
+        df.drop(index=(df[df[col].isin([-2])].index), inplace=True)  # 清洗NDVI
+        # df.reset_index(inplace=True)  # 重置索引，但会保留原索引
+        df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
+    # print(df)
+    """写入部分"""
+    if(fac=='S' or fac=='s'):
+        writer = pd.ExcelWriter("./" + ref.iat[14, 2] + ".xlsx")  # 写入Excel文件
+        df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
+        writer.save()
+        writer.close()
+    elif(fac=='M' or fac=='m'):
+        writer = pd.ExcelWriter("./" + ref.iat[14, 2] + "NDVI&FAI.xlsx")  # 写入Excel文件
+        df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
+        writer.save()
+        writer.close()
+
+
    # NIR_8 = read_tiff(path_tiff+path4, num=1, key=True)
-    # NIR_9 = read_tiff(path5, num=9, key=True)
+   # NIR_9 = read_tiff(path5, num=9, key=True)
    # R = read_tiff(path5, num=4, key=True)
    # NDVI_8 = [0] * len(NIR_8)
     # NDVI_9 = [0] * len(SD)
@@ -38,29 +129,14 @@ def getxy_data(path):
     # 创建DataFrame
     # data n= [cdnX, cdnY, CHLA, SD, TN, TP]
     # columns = ['X', 'Y', 'CHLA', 'SD', 'TP', 'TN']
-    dict = {'X': cdnX, 'Y': cdnY, 'CHLA': CHLA,
-            'SD': SD, 'TP': TP, 'TN': TN}  # , 'FAI01':FAI01, 'NDVI':NDVI}
-    df = pd.DataFrame(data=dict)
+
     # df.drop(index=df[df['CHLA'].isin([-999])].index[0], inplace=True)  # 只删除了一行
     # df['CHLA'].isin([-999])  # Name: CHLA, Length: 210748, dtype: bool
     # df1 = df[df['CHLA'].isin([-999])]  # 包含-999的DataFrame
     # df.drop(index=df[df['CHLA'] < 0].index[0], inplace=True)  # 只删除了一行
     # df.drop(index=(df.loc[(df['CHLA'] == -999)].index), inplace=True)  # 可删除多行 # 只允许有一个key
     # 清洗异常值
-    for col in df.columns:  # df1.columns : 列名称的list
-        # print(col)  # col为一个个列名
-        # df.drop(index=(df.loc[(df[col] == -999)].index), inplace=True)
-        df.drop(index=(df[df[col].isin([-999])].index), inplace=True)  # 清洗4个指标
-        df.drop(index=(df[df[col].isin([-2])].index), inplace=True)  # 清洗NDVI
-        # df.reset_index(inplace=True)  # 重置索引，但会保留原索引
-        df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
-    # print(df)
 
-    """写入部分"""
-    writer = pd.ExcelWriter("./" + ref.iat[14, 2] + ".xlsx")  # 写入Excel文件
-    df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
-    writer.save()
-    writer.close()
 def get_sorc(ref,fac= False):
     if(fac==False):##写两张表
         path_band = ("./" + ref.iat[14, 2] + ".xlsx")
@@ -138,38 +214,7 @@ def read_tiff(path, num=1, key=None):#默认单波段
         # print(len(data_list))
     return data_list
     # return dataDF
-def read_xy(path):
-    """
-       读取坐标，一般一期文件读一次就行
-       :param path: 路径文件
-       :return: 存储XY坐标的列表，def[0] is X ; def[1] is Y.
-       """
-    '''tiff坐标提取'''  # 两列
-    gdal.AllRegister()  # 注册所有已知的驱动，包括动态库自动加载的驱动
-    dataset = gdal.Open(path)
-    adfGeoTransform = dataset.GetGeoTransform()
-    # # 左上角地理坐标
-    # print(adfGeoTransform[0])
-    # print(adfGeoTransform[3])
-    nXSize = dataset.RasterXSize  # 列数
-    nYSize = dataset.RasterYSize  # 行数
-    print(nXSize, nYSize)
-    arrSlope = []  # 用于存储每个像素的（X，Y）坐标
-    for i in range(nYSize):  # 注意XY不要写反
-        # row = []
-        for j in range(nXSize):
-            px = adfGeoTransform[0] + j * adfGeoTransform[1] + i * adfGeoTransform[2]
-            py = adfGeoTransform[3] + j * adfGeoTransform[4] + i * adfGeoTransform[5]
-            # GT(0)和GT(3)是第一组，表示图像左上角的地理坐标；
-            # GT(1)和GT(5)是第二组，表示图像横向和纵向的分辨率（一般这两者的值相等，符号相反，横向分辨率为正数，纵向分辨率为负数）；
-            # GT(2)和GT(4)是第三组，表示图像旋转系数，对于一般图像来说，这两个值都为0。
-            col = [px, py]
-            arrSlope.append(col)
-    cdnX, cdnY = [], []  # 用于分别存储每个像素的(x,y)坐标
-    for i in range(nXSize * nYSize):
-        cdnX.append(arrSlope[i][0])
-        cdnY.append(arrSlope[i][1])
-    return cdnX, cdnY
+
 def read_band(path, head=None):
     """
     :param path: 存储 band 文件所在的目录，单个字符串，最好加 r 前缀
