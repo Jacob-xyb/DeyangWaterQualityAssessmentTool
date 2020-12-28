@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import xlsxwriter
 import math
+import os
 
 def read_xy(path):
     """
@@ -44,8 +45,8 @@ def getxy_data(path,fac):
     path2 = ref.iat[6, 2]#SD参数
     path3 = ref.iat[7, 2]#TP参数
     path4 = ref.iat[8, 2]#TN参数
-    # path5 = ref.iat[9, 2]#NDVI参数
-    # path6 = ref.iat[9, 2]#FAI参数
+    path5 = ref.iat[9, 2]#NDVI参数
+    path6 = ref.iat[9, 2]#FAI参数
     '''
     可以检测读取到的图片波段数与参数fac是否对应，不对应则try-except报错
     '''
@@ -61,8 +62,22 @@ def getxy_data(path,fac):
         SD = read_tiff(path_tiff + path2)
         TN = read_tiff(path_tiff + path3)
         TP = read_tiff(path_tiff + path4)
+        NDVI = read_tiff(path_tiff + path5)
+        FAI = read_tiff(path_tiff + path6)
         dict = {'X': cdnX, 'Y': cdnY, 'CHLA': CHLA,
-                'SD': SD, 'TP': TP, 'TN': TN}
+                'SD': SD, 'TP': TP, 'TN': TN,'NDVI':NDVI,'FAI':FAI}
+        df = pd.DataFrame(data=dict)
+        for col in df.columns:  # df1.columns : 列名称的list
+            # print(col)  # col为一个个列名
+            # df.drop(index=(df.loc[(df[col] == -999)].index), inplace=True)
+            df.drop(index=(df[df[col].isin([-999])].index), inplace=True)  # 清洗4个指标
+            df.drop(index=(df[df[col].isin([-2])].index), inplace=True)  # 清洗NDVI
+            # df.reset_index(inplace=True)  # 重置索引，但会保留原索引
+            df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
+        writer = pd.ExcelWriter("./" + ref.iat[14, 2] + ".xlsx")  # 写入Excel文件
+        df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
+        writer.save()
+        writer.close()
 
     elif(fac=='M' or fac=='m'):
         print("请选择要查询的波段数:")
@@ -93,22 +108,15 @@ def getxy_data(path,fac):
 
 
 
-    df = pd.DataFrame(data=dict)
-    for col in df.columns:  # df1.columns : 列名称的list
-        # print(col)  # col为一个个列名
-        # df.drop(index=(df.loc[(df[col] == -999)].index), inplace=True)
-        df.drop(index=(df[df[col].isin([-999])].index), inplace=True)  # 清洗4个指标
-        df.drop(index=(df[df[col].isin([-2])].index), inplace=True)  # 清洗NDVI
-        # df.reset_index(inplace=True)  # 重置索引，但会保留原索引
-        df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
-    # print(df)
-    """写入部分"""
-    if(fac=='S' or fac=='s'):
-        writer = pd.ExcelWriter("./" + ref.iat[14, 2] + ".xlsx")  # 写入Excel文件
-        df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
-        writer.save()
-        writer.close()
-    elif(fac=='M' or fac=='m'):
+        df = pd.DataFrame(data=dict)
+        for col in df.columns:  # df1.columns : 列名称的list
+            # print(col)  # col为一个个列名
+            # df.drop(index=(df.loc[(df[col] == -999)].index), inplace=True)
+            df.drop(index=(df[df[col].isin([-999])].index), inplace=True)  # 清洗4个指标
+            df.drop(index=(df[df[col].isin([-2])].index), inplace=True)  # 清洗NDVI
+            # df.reset_index(inplace=True)  # 重置索引，但会保留原索引
+            df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
+        # print(df)
         writer = pd.ExcelWriter("./" + ref.iat[14, 2] + "NDVI&FAI.xlsx")  # 写入Excel文件
         df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
         writer.save()
@@ -138,7 +146,7 @@ def getxy_data(path,fac):
     # 清洗异常值
 
 def get_sorc(ref,fac= False):
-    if(fac==False):##写两张表
+    if(fac==False):##如果不要求展示，则给出两张excel 第一张是XY坐标与对应各项参数，第二张是XY坐标与对应第一张的测评结果，结果用数字表示
         path_band = ("./" + ref.iat[14, 2] + ".xlsx")
         df = read_band(path=path_band)
         surface = surface_rank2(df=df, list_tar=["TP", "TN"])
@@ -152,7 +160,7 @@ def get_sorc(ref,fac= False):
         df_tar.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
         writer.save()
         writer.close()
-    else:##写三张表
+    else:##如果要求展示，则给出三张表，第一张是XY坐标与对应各项参数，第二张是XY坐标与对应第一张的测评结果，结果用数字表示，第三张在第二张的基础上用文字表示结果
         path_band = ("./" + ref.iat[14, 2] + ".xlsx")
         df = read_band(path=path_band)
         surface = surface_rank2(df=df, list_tar=["TP", "TN"])
@@ -176,10 +184,17 @@ def get_sorc(ref,fac= False):
         df_tar["surface"] = surface
         df_tar["TLI"] = TLI3
         df_tar["TSI"] = TSI3
-        writer = pd.ExcelWriter('s2b_20200216_Res.xlsx')  # 写入Excel文件
+        writer = pd.ExcelWriter('s2b_20200317_Res.xlsx')  # 写入Excel文件
         df_tar.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
         writer.save()
         writer.close()
+
+def is_already_exist(filename): #判断给出的路径对应文件是否存在，存在则读取数据，不存在则报错
+    if os.path.exists(filename):
+        return True
+    else:
+        return False
+
 
 def read_tiff(path, num=1, key=None):#默认单波段
     """
@@ -187,33 +202,36 @@ def read_tiff(path, num=1, key=None):#默认单波段
     :param path: tiff 文件所在的目录，单个字符串，最好加 r 前缀
     :return: list
     """
-    dataset = gdal.Open(path)
-    # print(dataset.GetDescription())  # 数据描述
-    #print(dataset.RasterCount)  # 波段数
-    nXSize = dataset.RasterXSize  # 列数
-    nYSize = dataset.RasterYSize  # 行数
-    band = dataset.GetRasterBand(num)  # 获取波段
-    # print(nXSize, nYSize)
-    data = band.ReadAsArray(0, 0, nXSize, nYSize)  # data为numpy格式
-    # dataDF = pd.DataFrame(data)
-    data_list = []
-    if key == True:
-        for i in range(nYSize):
-            for j in range(nXSize):
-                # if data[i, j] > 0:
-                data_list.append(data[i, j])
-                # else:
-                #     data_list.append(-999)
+    if(is_already_exist(path)==False):
+        print('wrong')
     else:
-        for i in range(nYSize):
-            for j in range(nXSize):
-                if data[i, j] > 0:
+        dataset = gdal.Open(path)
+        # print(dataset.GetDescription())  # 数据描述
+        #print(dataset.RasterCount)  # 波段数
+        nXSize = dataset.RasterXSize  # 列数
+        nYSize = dataset.RasterYSize  # 行数
+        band = dataset.GetRasterBand(num)  # 获取波段
+        # print(nXSize, nYSize)
+        data = band.ReadAsArray(0, 0, nXSize, nYSize)  # data为numpy格式
+        # dataDF = pd.DataFrame(data)
+        data_list = []
+        if key == True:
+            for i in range(nYSize):
+                for j in range(nXSize):
+                    # if data[i, j] > 0:
                     data_list.append(data[i, j])
-                else:
-                    data_list.append(-999)
-        # print(len(data_list))
-    return data_list
-    # return dataDF
+                    # else:
+                    #     data_list.append(-999)
+        else:
+            for i in range(nYSize):
+                for j in range(nXSize):
+                    if data[i, j] > 0:
+                        data_list.append(data[i, j])
+                    else:
+                        data_list.append(-999)
+            # print(len(data_list))
+        return data_list
+        # return dataDF
 
 def read_band(path, head=None):
     """
