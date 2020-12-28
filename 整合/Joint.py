@@ -5,7 +5,7 @@ if __name__ == '__main__':#C:\Users\Administrator\PycharmProjects\input_param.xl
     if(re=='S' or re=='s'):
         print("请输入单波段表格存放路径")#"E://shixi//github_mycellar//DeyangWaterQualityAssessmentTool//整合//input_param.xlsx"
         path=input()
-        getxy_data(path,re)#获取xy坐标与对应的参数的excel表
+        getxy_data_S(path)#获取xy坐标与对应的参数的excel表
         ref = pd.read_excel(path, index_col=0)#这个表格中给出的都是单波段图像的路径
         print("是否展示详细测评结果? y/n")
         get=input()
@@ -14,19 +14,19 @@ if __name__ == '__main__':#C:\Users\Administrator\PycharmProjects\input_param.xl
     elif(re=='M' or re=='m'):
         print("请输入多波段表格存放路径")
         path=input()
-        getxy_data(path,re)
+        getxy_data_M(path)
         ref = pd.read_excel(path, index_col=0)
-        print("是否展示详细测评结果? y/n")
-        get=input()
-        get_sorc(ref,get=='y')
+        #print("是否展示详细测评结果? y/n")
+        #get=input()
+        #get_sorc(ref,get=='y')
     #多波段三张表，一张参数表，两张测评表，其中参数表多两列NDVI 和 FAI
     else:
         print("输入有误")
     #最后一步
     #file1="./" + ref.iat[14, 2] + "NDVI&FAI.xlsx"#单波段没有这个文件就报错
-    file2="./" + ref.iat[14, 2] + ".xlsx"
+    #file2="./" + ref.iat[14, 2] + ".xlsx"
     #df1 = pd.read_excel(file1, index_col=0)
-    df2 = pd.read_excel(file2, index_col=0)
+    #df2 = pd.read_excel(file2, index_col=0)
     #df2_selected = df2[df2["FAI01"] == 1]
     #count = len(df2_selected)  # df2中1的个数
     #print(count)
