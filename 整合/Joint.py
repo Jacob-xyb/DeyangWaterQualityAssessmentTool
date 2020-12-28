@@ -7,7 +7,7 @@ if __name__ == '__main__':#C:\Users\Administrator\PycharmProjects\input_param.xl
         path=input()
         getxy_data(path,re)#获取xy坐标与对应的参数的excel表
         ref = pd.read_excel(path, index_col=0)#这个表格中给出的都是单波段图像的路径
-        print("showmore??? y/n")
+        print("是否展示详细测评结果? y/n")
         get=input()
         get_sorc(ref,get=='y')#输入y代表，参数为True，展示两张表
     #单波段三张表，一张参数表，两张测评表
@@ -16,7 +16,7 @@ if __name__ == '__main__':#C:\Users\Administrator\PycharmProjects\input_param.xl
         path=input()
         getxy_data(path,re)
         ref = pd.read_excel(path, index_col=0)
-        print("showmore???y/n")
+        print("是否展示详细测评结果? y/n")
         get=input()
         get_sorc(ref,get=='y')
     #多波段三张表，一张参数表，两张测评表，其中参数表多两列NDVI 和 FAI
