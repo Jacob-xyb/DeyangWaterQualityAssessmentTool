@@ -1,5 +1,5 @@
 root_path = ".."
-data_path = root_path + "/DATA"
+data_path = root_path + "/Data"
 result_path = root_path + "/result"
 
 
