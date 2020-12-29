@@ -12,7 +12,7 @@ def get_data_M():
     path4 = "TPz.tif"
     path5 = "E://shixi//github_mycellar//水质参数//0317after_12.tif"
     path6 = path5#上述所有路径都可以换成excel里读
-    # read_band(path_tiff + path1, target="C://Users//Administrator//Desktop//12波段.xlsx")  # 读全波段并生成excel
+    read_band(path_tiff + path1, target="C://Users//Administrator//Desktop//12波段.xlsx")  # 读全波段并生成excel
     # exit()
     #下一步可以改为输入计算的波段数
     XY = read_xy(path5) #这里用path1就可以了，因为手上没有CHLA的多波段图才用的path5

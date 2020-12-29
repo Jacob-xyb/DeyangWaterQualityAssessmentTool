@@ -17,7 +17,7 @@ def read_xy(path):#读坐标
        """
     '''tiff坐标提取'''  # 两列
     if (is_already_exist(path) == False):
-        print('wrong')
+        print('该文件不存在！')
     else:
         gdal.AllRegister()  # 注册所有已知的驱动，包括动态库自动加载的驱动
         dataset = gdal.Open(path)
@@ -52,7 +52,7 @@ def read_tiff(path, num=1, key=None):#默认单波段
     :return: list
     """
     if(is_already_exist(path)==False):
-        print('wrong')
+        print('该文件不存在！')
     else:
         dataset = gdal.Open(path)
         nXSize = dataset.RasterXSize  # 列数
@@ -88,7 +88,7 @@ def read_band(path, target=None, key=None):
     """
     #还可以加一个判断path中图像是不是单波段的函数
     if (is_already_exist(path) == False):
-        print('wrong')
+        print('该文件不存在！')
     else:
         dataset = gdal.Open(path)
         try:
