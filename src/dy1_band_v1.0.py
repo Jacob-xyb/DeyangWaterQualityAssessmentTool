@@ -1,15 +1,8 @@
 
 from FAC.GET import *
-from configs.Path_parameters import input_data_path,output_data_path
+from FAC.W_R import Write
+from configs.Single_path import *
 def read_single_band():
-    ref = pd.read_excel(input_data_path, index_col=0)
-    path_tiff = ref.iat[4, 2]
-    path1 = ref.iat[5, 2]
-    path2 = ref.iat[6, 2]
-    path3 = ref.iat[7, 2]
-    path4 = ref.iat[8, 2]
-    path5 = ref.iat[9, 2]
-    path6 = ref.iat[10, 2]
 
     XY = read_xy(path_tiff + path1)
 
@@ -21,10 +14,7 @@ def read_single_band():
     FAI01 = read_tiff(path_tiff + path5)
     NDVI = read_tiff(path_tiff + path6, 1)
 
-    # print(cdnX[0])
-    # 创建DataFrame
-    # data n= [cdnX, cdnY, CHLA, SD, TN, TP]
-    # columns = ['X', 'Y', 'CHLA', 'SD', 'TP', 'TN']
+
     dict = {'X': cdnX, 'Y': cdnY, 'CHLA': CHLA,
             'SD': SD, 'TP': TP, 'TN': TN, 'FAI01': FAI01, 'NDVI': NDVI}
     df = pd.DataFrame(data=dict)
@@ -42,12 +32,9 @@ def read_single_band():
         # df.reset_index(inplace=True)  # 重置索引，但会保留原索引
         df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
     # print(df)
-
+    Write(df,output_data_path)
     """写入部分"""
-    writer = pd.ExcelWriter(output_data_path)  # 写入Excel文件
-    df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
-    writer.save()
-    writer.close()
+
 
 
 

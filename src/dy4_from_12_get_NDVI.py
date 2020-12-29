@@ -1,8 +1,3 @@
-from osgeo import gdal
-import numpy as np
-import pandas as pd
-import os
-import xlsxwriter
 
 
 """README"""
@@ -11,17 +6,14 @@ NIR为近红外波段的反射值；sb2_band(8)
 R为红波段的反射值; sb2_band_band(4)
 '''
 from configs.Path_parameters import output_NDVI_path,output_multipband
+from configs.Multiple_path import *
 from FAC.GET import *
+from FAC.W_R import Write
 
 def Cal_NDVI():
-    path_tiff = r"../data/水质参数/s2b20200317waterRrs_"
-    path1 = r"CHLAz.tif"
-    path2 = r"SDz.tif"
-    path3 = r"TNz.tif"
-    path4 = r"TPz.tif"
-    path5 = r"../data/水质参数/0317after_12.tif"
 
-    read_band(path_tiff + path1, target=output_multipband)  # 读全波段并生成excel
+    read_band(path_tiff + path1, target=output_multipband)
+    # 读全波段并生成excel
     # exit()
 
     XY = read_xy(path5)  # 这里因为没有CHLAz的图，所以文件路径由path_tiff+path1换成path5，不然读不出xy坐标
@@ -60,10 +52,7 @@ def Cal_NDVI():
         df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
 
     """写入部分"""
-    writer = pd.ExcelWriter(output_NDVI_path)  # 写入Excel文件
-    df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
-    writer.save()
-    writer.close()
+    Write(df,output_NDVI_path)
 
 if __name__ == '__main__':
     Cal_NDVI()

@@ -1,15 +1,10 @@
 from configs.Path_parameters import output_FAI_path,output_multipband
+from configs.Multiple_path import *
 from FAC.GET import *
+from FAC.W_R import Write
 
 
 def Cal_FAI():
-    path_tiff = r"../data/水质参数/s2b20200317waterRrs_"
-    path1 = r"CHLAz.tif"
-    path2 = r"SDz.tif"
-    path3 = r"TNz.tif"
-    path4 = r"TPz.tif"
-    path5 = r"../data/水质参数/0317after_12.tif"
-
     read_band(path_tiff+path1, target=output_multipband)  # 读全波段并生成excel
     #exit()
 
@@ -67,11 +62,7 @@ def Cal_FAI():
         df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
 
     """写入部分"""
-    writer = pd.ExcelWriter(output_FAI_path)
-    # 写入Excel文件
-    df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
-    writer.save()
-    writer.close()
+    Write(df,output_FAI_path)
 
 
 

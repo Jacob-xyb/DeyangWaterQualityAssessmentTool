@@ -2,6 +2,7 @@
 import math
 from FAC.GET import *
 from configs.Path_parameters import output_data_path,evaluate1_data_path
+from FAC.W_R import Write
 def surface_rank(df, list_tar):
     df = df
     list_tar = list_tar
@@ -169,7 +170,7 @@ def TSI_rank(df, list_tar):
         return list_str_tar
 
     return TSI_tar(list_tar)
-def Get_shuzi(path):
+def Get_shuzi():
     df = read_band(output_data_path)
     surface = surface_rank(df=df, list_tar=["TP", "TN"])
     TLI = TLI_rank(df=df, list_tar=["CHLA", "SD", "TP", "TN"])
@@ -178,7 +179,4 @@ def Get_shuzi(path):
     df_tar["surface"] = surface
     df_tar["TLI"] = TLI
     df_tar["TSI"] = TSI
-    writer = pd.ExcelWriter(evaluate1_data_path)  # 写入Excel文件
-    df_tar.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
-    writer.save()
-    writer.close()
+    Write(df,evaluate1_data_path)

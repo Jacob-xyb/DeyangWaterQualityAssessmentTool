@@ -1,17 +1,13 @@
 import pandas as pd
 from FAC.GET import *
+from FAC.W_R import *
 from configs.Path_parameters import input_data_path,output_final_path,output_multipband
+from configs.Multiple_path import *
 def get_data_M():
 
-    path = input_data_path
-    ref = pd.read_excel(path, index_col=0)
-    path_tiff = r"../data/水质参数/s2b20200317waterRrs_"
-    path1 = r"CHLAz.tif"
-    path2 = r"SDz.tif"
-    path3 = r"TNz.tif"
-    path4 = r"TPz.tif"
-    path5 = r"../data/水质参数/0317after_12.tif"
-    path6 = path5#上述所有路径都可以换成excel里读
+
+    ref = pd.read_excel(input_data_path, index_col=0)
+
     read_band(path_tiff + path1, target=output_multipband)  # 读全波段并生成excel
     # exit()
     #下一步可以改为输入计算的波段数
@@ -50,12 +46,8 @@ def get_data_M():
         df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
 
     """写入部分"""
+    Write(df,output_final_path)
 
-    writer = pd.ExcelWriter(output_final_path)  # 写入Excel文件
-    df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
-    writer.save()
-    writer.close()
-    return output_final_path
 
    # NIR_8 = read_tiff(path_tiff+path4, num=1, key=True)
    # NIR_9 = read_tiff(path5, num=9, key=True)
