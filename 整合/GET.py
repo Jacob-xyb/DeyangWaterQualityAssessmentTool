@@ -79,18 +79,7 @@ def read_tiff(path, num=1, key=None):#默认单波段
             # print(len(data_list))
         return data_list
 
-def read_band(path, head=None):
-    """
-    :param path: 存储 band 文件所在的目录，单个字符串，最好加 r 前缀
-    :return: df band全部数据
-    """
-    df = pd.read_excel(path, index_col=0)  # excel里面已经有一列标签 index_col=0
-    if head == None:
-        return df
-    else:
-        return df.head(head)
-
-def read_band(path, target=None, num=0, key=None):
+def read_band(path, target=None, key=None):
     """
     :param path: 全波段文件路径
     :param num: 默认值为0，表示全波段读取；若指定数字，则读取指定波段
