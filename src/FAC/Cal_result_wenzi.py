@@ -1,10 +1,12 @@
 
 import math
-from GET import *
+from FAC.GET import *
+from configs.Path_parameters import output_data_path,evaluate2_data_path
 def surface_rank(df, list_tar):
     df = df
     list_tar = list_tar
     dict = {}
+
     def surface_tar(str_tar):  # 地表水单指标分类
         """
         :param str_tar: 需要评价的指标 字符串类型
@@ -35,6 +37,29 @@ def surface_rank(df, list_tar):
         series_max = df.max(axis=1)
         list_max = series_max.tolist()
         return list_max
+
+    for i in range(len(list_tar)):
+        dict[list_tar[i]] = surface_tar(list_tar[i])
+
+    # 新添加 to 整合版
+    # 大写罗马数字： Ⅰ Ⅱ Ⅲ Ⅳ Ⅴ
+    surface_rank = max_bad_tar(dict)
+    for i in range(len(surface_rank)):
+        data = surface_rank[i]
+        if data == 1:
+            surface_rank[i] = "Ⅰ类"
+        elif data == 2:
+            surface_rank[i] = "Ⅱ类"
+        elif data == 3:
+            surface_rank[i] = "Ⅲ类"
+        elif data == 4:
+            surface_rank[i] = "Ⅳ类"
+        elif data == 5:
+            surface_rank[i] = "Ⅴ类"
+        elif data == 6:
+            surface_rank[i] = "劣Ⅴ类"
+
+    return surface_rank
 def TLI_rank(df, list_tar):
     """
     TLI函数是 surface_tar() +(内嵌) toTLI()
@@ -89,15 +114,15 @@ def TLI_rank(df, list_tar):
         for i in range(len(list_str_tar)):
             data = list_str_tar[i]  # 收取指定行数据
             if data <= 30:
-                list_str_tar[i] = 1
+                list_str_tar[i] = "贫营养"
             elif 30 < data <= 50:
-                list_str_tar[i] = 2
+                list_str_tar[i] = "中营养"
             elif 50 < data <= 60:
-                list_str_tar[i] = 3
+                list_str_tar[i] = "轻度富营养"
             elif 60 < data <= 70:
-                list_str_tar[i] = 4
+                list_str_tar[i] = "中度富营养"
             elif 70 < data:
-                list_str_tar[i] = 5
+                list_str_tar[i] = "重度度富营养"
         return list_str_tar
 
     return TLI_tar(list_tar)
@@ -156,20 +181,20 @@ def TSI_rank(df, list_tar):
         for i in range(len(list_str_tar)):
             data = list_str_tar[i]  # 收取指定行数据
             if data <= 30:
-                list_str_tar[i] = 1
+                list_str_tar[i] = "贫营养"
             elif 30 < data <= 50:
-                list_str_tar[i] = 2
+                list_str_tar[i] = "中营养"
             elif 50 < data <= 60:
-                list_str_tar[i] = 3
+                list_str_tar[i] = "轻度富营养"
             elif 60 < data <= 70:
-                list_str_tar[i] = 4
+                list_str_tar[i] = "中度富营养"
             elif 70 < data:
-                list_str_tar[i] = 5
+                list_str_tar[i] = "重度富营养"
         return list_str_tar
 
     return TSI_tar(list_tar)
-def Get_shuzi(path):
-    df = read_band(path)
+def Get_wenzi(path):
+    df = read_band(output_data_path)
     surface = surface_rank(df=df, list_tar=["TP", "TN"])
     TLI = TLI_rank(df=df, list_tar=["CHLA", "SD", "TP", "TN"])
     TSI = TSI_rank(df=df, list_tar=["CHLA", "SD", "TP"])
@@ -177,7 +202,7 @@ def Get_shuzi(path):
     df_tar["surface"] = surface
     df_tar["TLI"] = TLI
     df_tar["TSI"] = TSI
-    writer = pd.ExcelWriter("./" +  "评价表数字版.xlsx")  # 写入Excel文件
+    writer = pd.ExcelWriter(evaluate2_data_path)  # 写入Excel文件
     df_tar.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
     writer.save()
     writer.close()

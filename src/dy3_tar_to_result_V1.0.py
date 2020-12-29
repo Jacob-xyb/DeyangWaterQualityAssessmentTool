@@ -1,6 +1,6 @@
-
 import math
-from GET import *
+from FAC.GET import *
+from configs.Path_parameters import output_data_path,evaluate2_data_path
 def surface_rank(df, list_tar):
     df = df
     list_tar = list_tar
@@ -192,16 +192,30 @@ def TSI_rank(df, list_tar):
         return list_str_tar
 
     return TSI_tar(list_tar)
-def Get_wenzi(path):
-    df = read_band(path)
+def evaluation2():
+    '''读取部分'''
+    path_band = output_data_path
+    # df = read_band(path=path_band, head=200)
+    df = read_band(path=path_band)
+    '''计算部分'''
     surface = surface_rank(df=df, list_tar=["TP", "TN"])
     TLI = TLI_rank(df=df, list_tar=["CHLA", "SD", "TP", "TN"])
     TSI = TSI_rank(df=df, list_tar=["CHLA", "SD", "TP"])
+    # print(surface)
+    # print(TLI)
+    # print(TSI)
+    '''整合部分'''
     df_tar = df[["X", "Y"]]  # 多列时要写成列表形式
     df_tar["surface"] = surface
     df_tar["TLI"] = TLI
     df_tar["TSI"] = TSI
-    writer = pd.ExcelWriter("./" +  "评价表文字版.xlsx")  # 写入Excel文件
+    '''写入部分'''
+    writer = pd.ExcelWriter(evaluate2_data_path)  # 写入Excel文件
     df_tar.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
     writer.save()
     writer.close()
+
+
+if __name__ == '__main__':
+    evaluation2()
+

@@ -1,14 +1,12 @@
-import pandas as pd
-from GET import read_xy,read_tiff
-
+from FAC.GET import *
+from configs.Path_parameters import input_data_path,output_data_path
 
 
 def get_data_S():
     '''
     可以检测读取到的图片波段数与参数fac是否对应，不对应则try-except报错
     '''
-    print('请输入单波段图像表格路径:')
-    path = input()
+    path = input_data_path
 
     ref = pd.read_excel(path, index_col=0)
     path_tiff = ref.iat[4, 2]  # 初始路径
@@ -37,9 +35,8 @@ def get_data_S():
         df.drop(index=(df[df[col].isin([-2])].index), inplace=True)  # 清洗NDVI
         # df.reset_index(inplace=True)  # 重置索引，但会保留原索引
         df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
-    path_single="./" + ref.iat[14, 2] + ".xlsx"
-    writer = pd.ExcelWriter(path_single)  # 写入Excel文件
+    writer = pd.ExcelWriter(output_data_path)  # 写入Excel文件
     df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
     writer.save()
     writer.close()
-    return path_single
+    return output_data_path

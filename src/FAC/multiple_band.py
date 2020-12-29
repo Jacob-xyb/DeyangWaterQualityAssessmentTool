@@ -1,18 +1,18 @@
 import pandas as pd
-from GET import  *
-
+from FAC.GET import *
+from configs.Path_parameters import input_data_path,output_final_path,output_multipband
 def get_data_M():
-    print('请输入多波段图像表格路径:')
-    path = input()
+
+    path = input_data_path
     ref = pd.read_excel(path, index_col=0)
-    path_tiff = "E://shixi//github_mycellar//水质参数//s2b20200317waterRrs_"
-    path1 = "CHLAz.tif"
-    path2 = "SDz.tif"
-    path3 = "TNz.tif"
-    path4 = "TPz.tif"
-    path5 = "E://shixi//github_mycellar//水质参数//0317after_12.tif"
+    path_tiff = r"../data/水质参数/s2b20200317waterRrs_"
+    path1 = r"CHLAz.tif"
+    path2 = r"SDz.tif"
+    path3 = r"TNz.tif"
+    path4 = r"TPz.tif"
+    path5 = r"../data/水质参数/0317after_12.tif"
     path6 = path5#上述所有路径都可以换成excel里读
-    read_band(path_tiff + path1, target="C://Users//Administrator//Desktop//12波段.xlsx")  # 读全波段并生成excel
+    read_band(path_tiff + path1, target=output_multipband)  # 读全波段并生成excel
     # exit()
     #下一步可以改为输入计算的波段数
     XY = read_xy(path5) #这里用path1就可以了，因为手上没有CHLA的多波段图才用的path5
@@ -50,12 +50,12 @@ def get_data_M():
         df.reset_index(drop=True, inplace=True)  # 重置索引，不会保留原索引
 
     """写入部分"""
-    path_multiple="./" + "多波段图计算结果.xlsx"
-    writer = pd.ExcelWriter(path_multiple)  # 写入Excel文件
+
+    writer = pd.ExcelWriter(output_final_path)  # 写入Excel文件
     df.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
     writer.save()
     writer.close()
-    return path_multiple
+    return output_final_path
 
    # NIR_8 = read_tiff(path_tiff+path4, num=1, key=True)
    # NIR_9 = read_tiff(path5, num=9, key=True)
