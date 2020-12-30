@@ -1,0 +1,15 @@
+ENVI
+description = {
+  ENVI File, Created [Thu Nov 05 15:46:23 2020]}
+samples = 176
+lines   = 897
+bands   = 1
+header offset = 0
+file type = ENVI Standard
+data type = 4
+interleave = bsq
+sensor type = Unknown
+byte order = 0
+map info = {UTM, 1.000, 1.000, 442140.000, 3447730.000, 1.0000000000e+001, 1.0000000000e+001, 48, North, World Geodetic System 1984, units=Meters}
+coordinate system string = {PROJCS["WGS 84 / UTM zone 48N",GEOGCS["WGS 84",DATUM["World Geodetic System 1984",SPHEROID["WGS 84",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["false_easting",500000.0],PARAMETER["false_northing",0.0],PARAMETER["central_meridian",105.0],PARAMETER["scale_factor",0.9996],PARAMETER["latitude_of_origin",0.0],UNIT["m",1.0]]}
+wavelength units = Unknown

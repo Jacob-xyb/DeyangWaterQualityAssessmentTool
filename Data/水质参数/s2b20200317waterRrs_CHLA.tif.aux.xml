@@ -1,0 +1,28 @@
+<PAMDataset>
+  <Metadata domain="IMAGE_STRUCTURE">
+    <MDI key="INTERLEAVE">BAND</MDI>
+  </Metadata>
+  <Metadata domain="ENVI">
+    <MDI key="bands">1</MDI>
+    <MDI key="byte_order">0</MDI>
+    <MDI key="coordinate_system_string">{PROJCS["WGS 84 / UTM zone 48N",GEOGCS["WGS 84",DATUM["World Geodetic System 1984",SPHEROID["WGS 84",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["false_easting",500000.0],PARAMETER["false_northing",0.0],PARAMETER["central_meridian",105.0],PARAMETER["scale_factor",0.9996],PARAMETER["latitude_of_origin",0.0],UNIT["m",1.0]]}</MDI>
+    <MDI key="data_type">4</MDI>
+    <MDI key="description">{  ENVI File, Created [Thu Nov 05 15:46:23 2020]}</MDI>
+    <MDI key="file_type">ENVI Standard</MDI>
+    <MDI key="header_offset">0</MDI>
+    <MDI key="interleave">bsq</MDI>
+    <MDI key="lines">897</MDI>
+    <MDI key="samples">176</MDI>
+    <MDI key="sensor_type">Unknown</MDI>
+    <MDI key="wavelength_units">Unknown</MDI>
+  </Metadata>
+  <PAMRasterBand band="1">
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">60.900978088379</MDI>
+      <MDI key="STATISTICS_MEAN">14.757563871131</MDI>
+      <MDI key="STATISTICS_MINIMUM">3.6417264938354</MDI>
+      <MDI key="STATISTICS_STDDEV">3.8724610245139</MDI>
+      <MDI key="STATISTICS_VALID_PERCENT">11.49</MDI>
+    </Metadata>
+  </PAMRasterBand>
+</PAMDataset>
