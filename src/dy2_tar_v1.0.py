@@ -19,7 +19,7 @@ def evaluation1():
     df_tar["NDVI"] = df["NDVI"]
     '''写入部分'''
 
-    Write(df,evaluate1_data_path)
+    Write(df_tar,evaluate1_data_path)
 
 
 if __name__ == '__main__':

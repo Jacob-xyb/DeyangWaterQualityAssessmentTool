@@ -17,7 +17,7 @@ def evaluation2():
     df_tar["TLI"] = TLI
     df_tar["TSI"] = TSI
     '''写入部分'''
-    Write(df,evaluate2_data_path)
+    Write(df_tar,evaluate2_data_path)
 
 
 if __name__ == '__main__':

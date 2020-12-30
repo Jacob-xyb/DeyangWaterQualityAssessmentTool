@@ -35,10 +35,6 @@ def read_single_band():
     Write(df,output_data_path)
     """写入部分"""
 
-
-
-
-
 if __name__ == '__main__':
     read_single_band()
 

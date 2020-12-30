@@ -5,7 +5,7 @@ result_path = root_path + "/result"
 
 
 
-input_data_path = data_path + "/input_param.xlsx"          # 输入数据,测试中针对于0317，如果要创建其他日期的excel 路径名也对应改一下
+input_data_path = data_path + "/input_param.xlsx"          # 输入数据,测试中针对于0317，如果要创建其他日期的excel 路径名也对应改一下,可以改成形如`input_0317.xlsx`/`input_0206.xlsx`
 evaluate1_data_path=result_path+"/s2b_20200317_TarR.xlsx"
 evaluate2_data_path=result_path+"/s2b_20200317_Res.xlsx"
 output_data_path = result_path + "/s2b_20200317_waterRrs.xlsx"      # 插补加预测输出结果

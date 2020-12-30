@@ -5,7 +5,7 @@ from FAC.W_R import Write
 
 
 def Cal_FAI():
-    read_band(path_tiff+path1, target=output_multipband)  # 读全波段并生成excel
+    read_band(path_tiff+path1, target=output_multipband)  # 读全波段并生成excel,这里因为没有CHLA的多波段图像，所以read_band会报错`文件不存在`
     #exit()
 
     XY = read_xy(path5)#这里因为没有CHLAz的图，所以文件路径由path_tiff+path1换成path5，不然读不出xy坐标
