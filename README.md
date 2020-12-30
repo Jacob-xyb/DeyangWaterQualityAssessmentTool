@@ -18,12 +18,19 @@
 
 3：src文件夹存放:
 >**dy_All.py**可运行文件，直接根据Data里的文件生成result的文件
+>
 >**dy1.py**可运行文件，根据单波段图生成excel表格即**s2b_20200317_waterRrs.xlsx**
+>
 >**dy2.py**可运行文件，生成**s2b_20200317_TarR.xlsx**
+>
 >**dy3.py**可运行文件，生成**s2b_20200317_Res.xlsx**
+>
 >**dy4.py**可运行文件，生成**s2b_20200317_after12.xlsx**
+>
 >**dy5.py**可运行文件，生成**s2b_20200317_FAI11.xlsx**
+>
 >**dy6.py**可运行文件，用来对算出来的FAI和单波段读出来的FAI进行比较分析
+>
 
 4：/src/configs文件夹里存放：配置相关文件
 >**Multiple_path.py**  多波段图像的存放路径
