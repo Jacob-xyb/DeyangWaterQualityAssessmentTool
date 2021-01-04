@@ -204,4 +204,5 @@ def Get_wenzi():
     df_tar["surface"] = surface
     df_tar["TLI"] = TLI
     df_tar["TSI"] = TSI
+    df_tar["NDVI"] = df["NDVI"]
     Write(df,evaluate2_data_path)

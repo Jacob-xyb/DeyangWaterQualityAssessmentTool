@@ -37,6 +37,10 @@ def surface_rank(df, list_tar):
         series_max = df.max(axis=1)
         list_max = series_max.tolist()
         return list_max
+
+    for i in range(len(list_tar)):
+        dict[list_tar[i]] = surface_tar(list_tar[i])
+    return max_bad_tar(dict)
 def TLI_rank(df, list_tar):
     """
     TLI函数是 surface_tar() +(内嵌) toTLI()
