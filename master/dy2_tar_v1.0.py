@@ -151,7 +151,7 @@ def TSI_rank(df, list_tar):
                 if str_tar == 'CHLA':
                     list_str_tar[i] = (9.81*math.log(data))+30.6  # 9.81 "Ln" chlorophyll ɑ （μg/L）+30.6
                 elif str_tar == 'TP':
-                    list_str_tar[i] = (14.42*math.log(data))+4.15  # 14.42 Ln total phosphorus （μg/L）+4.15
+                    list_str_tar[i] = (14.42*1000*math.log(data))+4.15  # 14.42 Ln total phosphorus （μg/L）+4.15
                 # elif str_tar == 'TN':
                 #     pass
                 elif str_tar == 'SD':
