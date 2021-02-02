@@ -4,7 +4,7 @@
 # dir
 branch/
 version/
-
+**/*__pyache__/
 
 # data
 data/
