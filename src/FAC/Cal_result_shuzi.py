@@ -1,24 +1,12 @@
-import pandas as pd       # 导入pandas模块
+
 import math
-import xlsxwriter
-
-def read_band(path, head=None):
-    """
-    :param path: 存储 band 文件所在的目录，单个字符串，最好加 r 前缀
-    :return: df band全部数据
-    """
-    df = pd.read_excel(path, index_col=0)  # excel里面已经有一列标签 index_col=0
-    if head == None:
-        return df
-    else:
-        return df.head(head)
-
-
+from FAC.GET import *
+from configs.SH_Aug_path import output_data_path,evaluate1_data_path
+from FAC.W_R import Write
 def surface_rank(df, list_tar):
     df = df
-    list_tar = list_tar
+    list_tar= list_tar
     dict = {}
-
     def surface_tar(str_tar):  # 地表水单指标分类
         """
         :param str_tar: 需要评价的指标 字符串类型
@@ -49,11 +37,9 @@ def surface_rank(df, list_tar):
         series_max = df.max(axis=1)
         list_max = series_max.tolist()
         return list_max
-
     for i in range(len(list_tar)):
         dict[list_tar[i]] = surface_tar(list_tar[i])
     return max_bad_tar(dict)
-
 
 def TLI_rank(df, list_tar):
     """
@@ -121,8 +107,6 @@ def TLI_rank(df, list_tar):
         return list_str_tar
 
     return TLI_tar(list_tar)
-
-
 def TSI_rank(df, list_tar):
     """
     TSI函数是 TLI函数改编
@@ -151,7 +135,7 @@ def TSI_rank(df, list_tar):
                 if str_tar == 'CHLA':
                     list_str_tar[i] = (9.81*math.log(data))+30.6  # 9.81 "Ln" chlorophyll ɑ （μg/L）+30.6
                 elif str_tar == 'TP':
-                    list_str_tar[i] = (14.42*1000*math.log(data))+4.15  # 14.42 Ln total phosphorus （μg/L）+4.15
+                    list_str_tar[i] = (14.42*math.log(data))+4.15  # 14.42 Ln total phosphorus （μg/L）+4.15
                 # elif str_tar == 'TN':
                 #     pass
                 elif str_tar == 'SD':
@@ -190,31 +174,13 @@ def TSI_rank(df, list_tar):
         return list_str_tar
 
     return TSI_tar(list_tar)
-
-
-if __name__ == '__main__':
-    '''读取部分'''
-    ref = pd.read_excel(r"./input_param.xlsx", index_col=0)
-    path_band = ref.iat[19,2]
-    # df = read_band(path=path_band, head=200)
-    df = read_band(path=path_band)
-    '''计算部分'''
+def Get_shuzi():
+    df = read_band(output_data_path)
     surface = surface_rank(df=df, list_tar=["TP", "TN"])
     TLI = TLI_rank(df=df, list_tar=["CHLA", "SD", "TP", "TN"])
     TSI = TSI_rank(df=df, list_tar=["CHLA", "SD", "TP"])
-    # print(surface)
-    # print(TLI)
-    # print(TSI)
-    '''整合部分'''
     df_tar = df[["X", "Y"]]  # 多列时要写成列表形式
     df_tar["surface"] = surface
     df_tar["TLI"] = TLI
     df_tar["TSI"] = TSI
-    df_tar["NDVI"] = df["NDVI"]
-    '''写入部分'''
-
-    writer = pd.ExcelWriter("./"+ref.iat[23,2]+".xlsx")  # 写入Excel文件
-    df_tar.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
-    writer.save()
-    writer.close()
-
+    Write(df,evaluate1_data_path)

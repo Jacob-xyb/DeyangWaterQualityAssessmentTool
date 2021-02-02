@@ -1,17 +1,8 @@
-import pandas as pd       # 导入pandas模块
+
 import math
-
-def read_band(path, head=None):
-    """
-    :param path: 存储 band 文件所在的目录，单个字符串，最好加 r 前缀
-    :return: df band全部数据
-    """
-    df = pd.read_excel(path, index_col=0)  # excel里面已经有一列标签 index_col=0
-    if head == None:
-        return df
-    else:
-        return df.head(head)
-
+from FAC.GET import *
+from configs.SH_Aug_path import output_data_path,evaluate2_data_path
+from FAC.W_R import Write
 
 def surface_rank(df, list_tar):
     df = df
@@ -71,8 +62,6 @@ def surface_rank(df, list_tar):
             surface_rank[i] = "劣Ⅴ类"
 
     return surface_rank
-
-
 def TLI_rank(df, list_tar):
     """
     TLI函数是 surface_tar() +(内嵌) toTLI()
@@ -139,8 +128,6 @@ def TLI_rank(df, list_tar):
         return list_str_tar
 
     return TLI_tar(list_tar)
-
-
 def TSI_rank(df, list_tar):
     """
     TSI函数是 TLI函数改编
@@ -169,7 +156,7 @@ def TSI_rank(df, list_tar):
                 if str_tar == 'CHLA':
                     list_str_tar[i] = (9.81*math.log(data))+30.6  # 9.81 "Ln" chlorophyll ɑ （μg/L）+30.6
                 elif str_tar == 'TP':
-                    list_str_tar[i] = (14.42*1000*math.log(data))+4.15  # 14.42 Ln total phosphorus （μg/L）+4.15
+                    list_str_tar[i] = (14.42*math.log(data))+4.15  # 14.42 Ln total phosphorus （μg/L）+4.15
                 # elif str_tar == 'TN':
                 #     pass
                 elif str_tar == 'SD':
@@ -208,29 +195,13 @@ def TSI_rank(df, list_tar):
         return list_str_tar
 
     return TSI_tar(list_tar)
-
-
-if __name__ == '__main__':
-    '''读取部分'''
-    path_band = r'D:\4.company\项目文件\四川\德阳\德阳水质评价\1德阳水质提取\德阳水质提取V1.0' +\
-                '\s2b_20200216_waterRrs.xlsx'
-    # df = read_band(path=path_band, head=200)
-    df = read_band(path=path_band)
-    '''计算部分'''
+def Get_wenzi():
+    df = read_band(output_data_path)
     surface = surface_rank(df=df, list_tar=["TP", "TN"])
     TLI = TLI_rank(df=df, list_tar=["CHLA", "SD", "TP", "TN"])
     TSI = TSI_rank(df=df, list_tar=["CHLA", "SD", "TP"])
-    # print(surface)
-    # print(TLI)
-    # print(TSI)
-    '''整合部分'''
     df_tar = df[["X", "Y"]]  # 多列时要写成列表形式
     df_tar["surface"] = surface
     df_tar["TLI"] = TLI
     df_tar["TSI"] = TSI
-    '''写入部分'''
-    writer = pd.ExcelWriter('s2b_20200216_Res.xlsx')  # 写入Excel文件
-    df_tar.to_excel(writer, float_format='%.5f')  # ‘page_1’是写入excel的sheet名 # 不写就是默认第一页
-    writer.save()
-    writer.close()
-
+    Write(df,evaluate2_data_path)
